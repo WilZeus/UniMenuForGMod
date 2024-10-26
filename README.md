@@ -13,3 +13,6 @@ The features inside are:
 - Credits (hihihihih :))
 - Tutorial (very cool)
 That's all of them. If you want to contribute, or fork this, go right for it. I won't stop you.
+
+
+If you want any feature's added, make a pull request and i'll add it in a later update.

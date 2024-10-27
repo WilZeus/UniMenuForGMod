@@ -184,9 +184,6 @@ local function Createunimenu()
         {text = "RTV", command = function()
             RunConsoleCommand("say", "!rtv")
         end},
-        {text = "Kill", command = function()
-            RunConsoleCommand("kill")
-        end},
         {text = "Rules", command = function()
             Derma_Message("Rules:\n1. No Cheating.\n2. Use common sense (No NSFW, No Racism, etc.).\n3. Don't abuse E2's or Starfall's (ex: esp, blinders, etc.).\n4. No self-promotion of any kind.\n5. Dont lag or crash the server.\n6.No propblock, propspam or proppush.", "Server Rules")
         end},

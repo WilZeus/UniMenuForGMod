@@ -92,7 +92,7 @@ local function CreatePlayerListMenu(contentPanel)
 end
 
 local REPO_URL = "https://raw.githubusercontent.com/WilZeus/UniMenuForGMod/main/version.txt"
-local LOCAL_VERSION = "1.3" -- Replace with the actual local version.
+local LOCAL_VERSION = "1.4" -- Replace with the actual local version.
 
 -- Function to check for updates
 local function CheckForUpdates()

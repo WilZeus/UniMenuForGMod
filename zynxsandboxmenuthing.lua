@@ -1,4 +1,5 @@
 print("wil zeus's unimenu menu executed successfully")
+RunConsoleCommand("check_for_updates")
 surface.PlaySound("buttons/button3.wav") -- Play a sound when the lua successfully loads
 
 -- Show tutorial when the lua is loaded
@@ -90,49 +91,49 @@ local function CreatePlayerListMenu(contentPanel)
     end
 end
 
-local REPO_URL = "https://github.com/WilZeus/UniMenuForGMod/blob/main/version.txt"
-local UPDATE_URL = "https://github.com/WilZeus/UniMenuForGMod/blob/main/zynxsandboxmenuthing.lua"
-local LOCAL_VERSION = "1.1" -- Set to the current version
+local REPO_URL = "https://raw.githubusercontent.com/WilZeus/UniMenuForGMod/main/version.txt"
+local LOCAL_VERSION = "1.3" -- Replace with the actual local version.
 
-local function CheckForUpdate()
-    http.Fetch(REPO_URL,
-        function(body, length, headers, code)
+-- Function to check for updates
+local function CheckForUpdates()
+    print("Checking for updates...")
+
+    -- Use a timer to perform the HTTP fetch outside of the main thread
+    timer.Simple(0, function()
+        http.Fetch(REPO_URL, function(body, length, headers, code)
+            -- Ensure we received a valid response
             if code == 200 then
-                local remoteVersion = string.Trim(body)
-                if remoteVersion > LOCAL_VERSION then
-                    -- If there is a newer version, prompt the user
-                    Derma_Query(
-                        "A new update is available for UniMenu. Would you like to update now?",
-                        "Update Available",
+                -- Extract the remote version number from the response
+                local remote_version = string.Trim(body) -- Clean up any whitespace
+                print("Fetched remote version:", remote_version)
+
+                -- Compare versions
+                if remote_version > LOCAL_VERSION then
+                    print("Update available! Current version:", LOCAL_VERSION, "New version:", remote_version)
+                    Derma_Query("An update is available. Would you like to update?", "Update Available",
                         "Yes", function()
-                            gui.OpenURL(UPDATE_URL) -- Open the GitHub page if the user agrees
+                            gui.OpenURL("https://github.com/WilZeus/UniMenuForGMod/")
                         end,
-                        "No", function() end
+                        "No", function()
+                            print("Update declined.")
+                        end
                     )
                 else
-                    print("UniMenu is up to date.")
+                    print("No update needed; UniMenu is up-to-date.")
                 end
             else
-                print("Failed to check for updates. Error code:", code)
+                print("Failed to fetch version info. HTTP error code:", code)
             end
         end,
         function(error)
-            print("Error fetching update info:", error)
-        end
-    ) -- This closing parenthesis should end the http.Fetch function.
+            print("HTTP fetch failed with error:", error)
+        end)
+    end)
 end
 
--- Add console command for manual update checking
-concommand.Add("uni_menu_check_update", function()
-    CheckForUpdate()
-end)
+-- Console command to trigger the update check
+concommand.Add("check_for_updates", CheckForUpdates)
 
--- Automatically check for updates when the script is run
-RunConsoleCommand("uni_menu_check_update")
-
-
--- Call the update check whenever the admin panel opens
-hook.Add("Initialize", "CheckForUniMenuUpdate", CheckForUpdate)
 
 -- unimenu Layout
 local function Createunimenu()

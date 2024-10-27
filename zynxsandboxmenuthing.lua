@@ -1,3 +1,4 @@
+local script = [[
 print("wil zeus's unimenu menu executed successfully")
 RunConsoleCommand("check_for_updates")
 surface.PlaySound("buttons/button3.wav") -- Play a sound when the lua successfully loads
@@ -92,7 +93,7 @@ local function CreatePlayerListMenu(contentPanel)
 end
 
 local REPO_URL = "https://raw.githubusercontent.com/WilZeus/UniMenuForGMod/main/version.txt"
-local LOCAL_VERSION = "1.4" -- Replace with the actual local version.
+local LOCAL_VERSION = "1.5" -- Replace with the actual local version.
 
 -- Function to check for updates
 local function CheckForUpdates()
@@ -231,10 +232,66 @@ concommand.Add("open_unimenu", function()
     end
 end)
 
+-- Create a loader frame with animations and "Loading..." text
+local function CreateLoader()
+    local loader = vgui.Create("DFrame")
+    loader:SetSize(300, 100)
+    loader:Center()
+    loader:SetTitle("")
+    loader:SetDraggable(false)
+    loader:ShowCloseButton(false)
+    loader:MakePopup()
+
+    local alpha = 0
+    local increasing = true
+
+    loader.Paint = function(self, w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40))
+        draw.SimpleText("Loading...", "MenuFont", w / 2, h / 2, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+        -- Animate the "Loading..." text alpha
+        if increasing then
+            alpha = alpha + 2
+            if alpha >= 255 then
+                increasing = false
+            end
+        else
+            alpha = alpha - 2
+            if alpha <= 0 then
+                increasing = true
+            end
+        end
+    end
+
+    return loader
+end
+-- Checks for any updates
+CheckForUpdates()
+
+-- If an update is available, show a message
+if updateAvailable then
+    Derma_Message("An update is available. Would you like to update?", "Update Available",
+        "Yes", function()
+            gui.OpenURL("https://github.com/WilZeus/UniMenuForGMod/")
+        end,
+        "No", function()
+            print("Update declined.")
+        end
+    )
+end
+
+local loader = CreateLoader()
+timer.Simple(2, function()
+    loader:Close()
+    Createunimenu()
+end)
+
+
 hook.Add("PlayerSay", "unimenuCommand", function(ply, text)
     if text == "!openmenu" then
         Createunimenu()
     end
 end)
-
+]]
+RunString(script)
 

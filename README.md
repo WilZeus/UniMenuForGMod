@@ -13,6 +13,7 @@ The features inside are:
 - Toggle goto for Zoltin's Sandbox
 - Credits (hihihihih :))
 - Tutorial (very cool)
+- Loader (very good)
 That's all of them. If you want to contribute, or fork this, go right for it. I won't stop you.
 
 

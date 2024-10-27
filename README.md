@@ -8,7 +8,7 @@ The features inside are:
 - Toggle Build & PVP Mode (for said servers that have this)
 - Player List
 - RTV
-- Suicide bind (for whatever reason requested by someone)
+- 2 Zoltins buttons related to their discord and content pack
 - The rules for Zoltin's sandbox
 - Toggle goto for Zoltin's Sandbox
 - Credits (hihihihih :))

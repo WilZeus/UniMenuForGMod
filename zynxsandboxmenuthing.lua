@@ -1,8 +1,6 @@
 print("wil zeus's unimenu menu executed successfully")
 surface.PlaySound("buttons/button3.wav") -- Play a sound when the lua successfully loads
 
--- e
-
 -- Show tutorial when the lua is loaded
 if not file.Exists("unimenu/ignoremessage.txt", "DATA") then
     local frame = Derma_Message("Press F8 to open the unimenu menu. You can also do !openmenu in chat or open_unimenu_menu in console to open the menu! Menu created by Wil Zeus, so hope you enjoy!", "Introductionairy Message", "OK")
@@ -92,6 +90,50 @@ local function CreatePlayerListMenu(contentPanel)
     end
 end
 
+local REPO_URL = "https://github.com/WilZeus/UniMenuForGMod/blob/main/version.txt"
+local UPDATE_URL = "https://github.com/WilZeus/UniMenuForGMod/blob/main/zynxsandboxmenuthing.lua"
+local LOCAL_VERSION = "1.1" -- Set to the current version
+
+local function CheckForUpdate()
+    http.Fetch(REPO_URL,
+        function(body, length, headers, code)
+            if code == 200 then
+                local remoteVersion = string.Trim(body)
+                if remoteVersion > LOCAL_VERSION then
+                    -- If there is a newer version, prompt the user
+                    Derma_Query(
+                        "A new update is available for UniMenu. Would you like to update now?",
+                        "Update Available",
+                        "Yes", function()
+                            gui.OpenURL(UPDATE_URL) -- Open the GitHub page if the user agrees
+                        end,
+                        "No", function() end
+                    )
+                else
+                    print("UniMenu is up to date.")
+                end
+            else
+                print("Failed to check for updates. Error code:", code)
+            end
+        end,
+        function(error)
+            print("Error fetching update info:", error)
+        end
+    ) -- This closing parenthesis should end the http.Fetch function.
+end
+
+-- Add console command for manual update checking
+concommand.Add("uni_menu_check_update", function()
+    CheckForUpdate()
+end)
+
+-- Automatically check for updates when the script is run
+RunConsoleCommand("uni_menu_check_update")
+
+
+-- Call the update check whenever the admin panel opens
+hook.Add("Initialize", "CheckForUniMenuUpdate", CheckForUpdate)
+
 -- unimenu Layout
 local function Createunimenu()
     if unimenuOpen then return end
@@ -149,6 +191,12 @@ local function Createunimenu()
         end},
         {text = "Toggle Goto", command = function()
             RunConsoleCommand("say", "!tgo")
+        end},
+        {text = "Zoltin's Discord server" , command = function()
+            gui.OpenURL("https://discord.gg/ySrqZmRwnE")
+        end},
+        {text = "Zoltin's Content Pack", command = function()
+            gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=1800091571")
         end},
         {text = "Show Credits" , command = function()
             Derma_Message("Menu created by Wil Zeus", "Credits")
